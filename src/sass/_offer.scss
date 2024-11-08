@@ -1,0 +1,9 @@
+.offer {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: calc(var(--default-padding) * 3);
+  padding-top: var(--default-padding);
+  @media (min-width: 768px) {
+    margin-bottom: calc(var(--default-padding) * 4);
+  }
+}
