@@ -1,0 +1,98 @@
+[id] {
+  scroll-margin-top: 80px;
+}
+.contact {
+  background-color: var(--primary-color);
+  &__wrapper {
+    padding: 0 var(--default-padding);
+    max-width: 1400px;
+    margin: 0 auto;
+    @media (min-width: 576px) {
+      display: flex;
+    }
+    @media (min-width: 992px) {
+      padding: 0 calc(var(--default-padding) * 2);
+    }
+  }
+  &__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--default-padding);
+    // background-color: #fffad1;
+    background-color: var(--secondary-color);
+    outline: 1px solid #ffffff;
+    outline-offset: -8px;
+    @media (min-width: 576px) {
+      margin-right: var(--default-padding);
+    }
+  }
+  &__logo-image {
+    width: 100%;
+    max-width: 300px;
+  }
+  &__aside {
+    padding-top: var(--default-padding);
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 786px) {
+      flex-direction: row;
+      justify-content: space-evenly;
+      flex-grow: 1;
+    }
+  }
+  &__title {
+    margin: var(--default-padding) 0;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    font-size: 2rem;
+    @media (min-width: 992px) {
+      font-size: 2.6rem;
+    }
+  }
+  &__contacts p,
+  &__links a {
+    display: flex;
+    padding: 10px 0;
+    color: #ffffff;
+    font-size: 1.8rem;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+    @media (min-width: 992px) {
+      font-size: 2rem;
+    }
+
+    & i {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      color: var(--secondary-color);
+    }
+  }
+  &__links a:hover {
+    color: var(--secondary-color);
+  }
+  &__socials {
+    margin: calc(var(--default-padding) * 2) 0;
+    & a {
+      margin-right: 20px;
+      padding: 1.5rem var(--default-padding);
+      outline: 1px solid #ffffff;
+      outline-offset: -8px;
+      background-color: var(--secondary-color);
+      color: #ffffff;
+      font-size: 2rem;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        outline: 1px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+    }
+  }
+  &__links {
+    margin-bottom: var(--default-padding);
+  }
+}
