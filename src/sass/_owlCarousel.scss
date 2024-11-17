@@ -1,0 +1,121 @@
+.slider {
+  position: relative;
+  &__card-list {
+    margin: 0 calc(var(--default-padding) * 2);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    &.no-transition {
+      scroll-behavior: auto;
+    }
+    &.dragging {
+      scroll-behavior: auto;
+      scroll-snap-type: none;
+    }
+    &.dragging .slider__card-item {
+      user-select: none;
+      cursor: grab;
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    @media (min-width: 576px) {
+      grid-auto-columns: calc((100% / 2) - 10px);
+    }
+    @media (min-width: 992px) {
+      grid-auto-columns: calc((100% / 3) - 15px);
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 40%;
+    width: 40px;
+    height: 40px;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: rgba(243, 152, 48, 0.4);
+    color: var(--primary-color);
+    transform: scale(1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      transform: scale(1.2);
+    }
+    &:first-child {
+      left: 4px;
+    }
+    &:last-child {
+      right: 4px;
+    }
+  }
+
+  &__card-item {
+    background-color: rgba(232, 143, 42, 0.2);
+    scroll-snap-align: start;
+  }
+  &__card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  &__text {
+    padding: calc(var(--default-padding) * 2) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    outline: 1px solid #fff;
+    outline-offset: -8px;
+  }
+  &__title {
+    margin-bottom: calc(var(--default-padding));
+    color: var(--primary-color);
+    font-size: 2.6rem;
+    text-transform: uppercase;
+  }
+  &__button {
+    padding: 15px var(--default-padding);
+    background-color: var(--primary-color);
+    outline: 1px solid #fff;
+    outline-offset: -8px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      background-color: #fff;
+      outline: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+  }
+  &__dots {
+    margin: var(--default-padding) 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & span {
+      margin: 7px;
+      display: inline-block;
+      background-color: rgba(243, 152, 48, 0.3);
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      &.active {
+        background-color: var(--primary-color);
+      }
+    }
+  }
+}
