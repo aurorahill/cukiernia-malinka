@@ -55,7 +55,7 @@
       font-size: 3.6rem;
       text-align: center;
       @media (min-width: 992px) {
-        font-size: 4.4rem;
+        font-size: 5rem;
         margin-top: calc(var(--default-padding) * 3);
       }
     }
@@ -73,7 +73,8 @@
     &__card {
       margin: var(--default-padding);
       max-width: 300px;
-      background-color: rgba(243, 152, 48, 0.7);
+
+      background-color: rgba(243, 152, 48, 0.2);
     }
     &__card-img {
       width: 100%;

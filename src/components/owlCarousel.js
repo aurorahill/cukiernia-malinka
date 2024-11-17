@@ -15,12 +15,11 @@ const initializeSlider = (
     startX,
     startScrollLeft,
     isAutoPlay = true,
-    active = 0,
-    timeoutId,
-    scrollTimeout;
+    active = 0, // to track active card
+    timeuotId;
 
-  const cardWidth = card.offsetWidth;
-  const cardPerView = Math.round(slider.offsetWidth / cardWidth);
+  let cardWidth = card.offsetWidth;
+  let cardPerView = Math.round(slider.offsetWidth / cardWidth);
 
   sliderChildren
     .slice(-cardPerView)
@@ -35,44 +34,51 @@ const initializeSlider = (
 
   arrows.forEach((arrow) => {
     arrow.addEventListener('click', () => {
-      slider.scrollLeft += arrow.id === 'left' ? -cardWidth : cardWidth;
-      handleInfiniteScroll();
+      arrow.id == 'left'
+        ? (slider.scrollLeft -= cardWidth)
+        : (slider.scrollLeft += cardWidth);
+      updateActiveCard();
+      changeDot();
     });
   });
 
   const dragStart = (e) => {
     isDragging = true;
     slider.classList.add('dragging');
-    startX = e.pageX || e.touches[0].pageX;
+    startX = e.pageX;
     startScrollLeft = slider.scrollLeft;
-  };
-
-  const dragging = (e) => {
-    if (!isDragging) return;
-    const x = e.pageX || e.touches[0].pageX;
-    slider.scrollLeft = startScrollLeft - (x - startX);
   };
 
   const dragStop = () => {
     isDragging = false;
     slider.classList.remove('dragging');
-    handleInfiniteScroll();
+    updateActiveCard();
+    changeDot();
   };
 
-  const handleInfiniteScroll = () => {
-    const maxScrollLeft = slider.scrollWidth - slider.offsetWidth;
+  const dragging = (e) => {
+    if (!isDragging) return;
+    slider.scrollLeft = startScrollLeft - (e.pageX - startX);
+  };
 
-    // Przechodzenie na koniec/początek bez przeskoku
-    if (slider.scrollLeft <= 0) {
+  const infiniteScroll = () => {
+    if (slider.scrollLeft === 0) {
       slider.classList.add('no-transition');
-      slider.scrollLeft = maxScrollLeft - cardWidth;
+      slider.scrollLeft = slider.scrollWidth - 2 * slider.offsetWidth;
+      slider.offsetHeight;
       slider.classList.remove('no-transition');
-    } else if (slider.scrollLeft >= maxScrollLeft) {
+    } else if (
+      Math.ceil(slider.scrollLeft) ===
+      slider.scrollWidth - slider.offsetWidth
+    ) {
       slider.classList.add('no-transition');
-      slider.scrollLeft = cardWidth;
+      slider.scrollLeft = slider.offsetWidth;
+      slider.offsetHeight;
       slider.classList.remove('no-transition');
     }
 
+    clearTimeout(timeuotId);
+    if (!slider.matches(':hover')) autoPlay();
     updateActiveCard();
     changeDot();
   };
@@ -84,24 +90,24 @@ const initializeSlider = (
   };
 
   const updateActiveCard = () => {
-    const currentIndex = Math.round(slider.scrollLeft / cardWidth);
+    const scrolledCards = Math.round(slider.scrollLeft / cardWidth);
     active =
-      (currentIndex - cardPerView + sliderChildren.length) %
-      sliderChildren.length;
+      (scrolledCards - 1 + sliderChildren.length) % sliderChildren.length;
   };
 
   const autoPlay = () => {
     if (window.innerWidth < 992 || !isAutoPlay) return;
-    timeoutId = setInterval(() => {
+    timeuotId = setInterval(() => {
       slider.scrollLeft += cardWidth;
-      handleInfiniteScroll();
+      updateActiveCard();
+      changeDot();
     }, time);
   };
 
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => {
       active = index;
-      slider.scrollLeft = (active + cardPerView) * cardWidth;
+      slider.scrollLeft = (active + 1) * cardWidth;
       changeDot();
     });
   });
@@ -110,16 +116,11 @@ const initializeSlider = (
 
   slider.addEventListener('mousedown', dragStart);
   slider.addEventListener('mousemove', dragging);
-  slider.addEventListener('touchstart', dragStart);
-  slider.addEventListener('touchmove', dragging);
   document.addEventListener('mouseup', dragStop);
-  document.addEventListener('touchend', dragStop);
-  slider.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(handleInfiniteScroll, 100);
+  slider.addEventListener('scroll', infiniteScroll);
+  slider.addEventListener('mouseenter', () => {
+    clearInterval(timeuotId);
   });
-
-  slider.addEventListener('mouseenter', () => clearInterval(timeoutId));
   slider.addEventListener('mouseleave', autoPlay);
 };
 
